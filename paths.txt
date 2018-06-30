@@ -1,0 +1,54 @@
+cd InterfaceManager/m_Panel_Rest
+cd InterfaceManager/m_Panel_Rest/ControllerOffset
+cd InterfaceManager/m_Panel_Rest/ControllerOffset/Shared
+cd InterfaceManager/m_Panel_Rest/ControllerOffset/Shared/Mouse/BG_Container
+cd InterfaceManager/m_Panel_Rest/ControllerOffset/Shared/Mouse/BG_Container/outerglow
+
+cd MainMenu/m_BasicMenu/m_MenuItems
+
+cd gamemanager/m_Inventory/m_Items
+
+cd gamemanager/m_PlayerManager/m_InteractiveObjectUnderCrosshair
+cd gamemanager/m_PlayerManager/m_InteractiveObjectNearCrosshair
+
+cd gamemanager/m_Thirst
+
+cd gamemanager/ModComponentMapper.ModHealthManager
+
+cd gamemanager/m_Condition
+
+cd gamemanager/m_Weather
+
+cd gamemanager/m_Frostbite
+cd gamemanager/m_Frostbite/m_LocationsCurrentFrostbiteDamage
+
+cd gamemanager/m_CameraEffects
+cd gamemanager/m_CameraEffects/m_ContrastEnhance
+
+cd gamemanager/m_InterfaceManager/m_Panel_ActionsRadial
+cd gamemanager/m_InterfaceManager/m_Panel_ActionsRadial/m_RadialArms
+
+cd gamemanager/m_WeaponCamera
+
+cd gamemanager/m_WeaponViewObject
+
+cd gamemanager/m_PlayerObject
+
+cd gamemanager/m_PlayerManager/m_ItemInHands
+
+cd gamemanager/m_vpFPSCamera/m_CurrentWeapon
+
+cd gamemanager/m_vpFPSCamera/m_CurrentWeapon/m_FirstPersonWeaponShoulder/FirstPersonWeapon/m_Renderable
+
+cd gamemanager/m_WeaponViewObject/CandyCaneGunTransform/CandyCaneGun/
+cd gamemanager/m_WeaponViewObject/CandyCaneGunTransform/CandyCaneGun/CandyCaneGun_rig
+
+cd gamemanager/m_vpFPSCamera/m_CurrentWeapon/BulletEmissionPoint
+
+cd gamemanager/m_vpFPSCamera/m_CurrentShooter
+
+cd gamemanager/m_vpFPSCamera/m_CurrentShooter/BulletEmissionLocator
+
+cd gamemanager/m_vpFPSCamera/m_CurrentShooter/m_MuzzleFlashComponent
+
+cd gamemanager/m_vpFPSCamera/m_CurrentShooter/m_StateManager/m_States
