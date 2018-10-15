@@ -65,12 +65,6 @@
     <Compile Include="src\Selector.cs" />
     <Compile Include="src\Utils.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ModComponent\ModComponentAPI\ModComponentAPI.csproj">
-      <Project>{5f848c8f-150c-4e70-8d85-071e694e9e2a}</Project>
-      <Name>ModComponentAPI</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>cmd /C IF DEFINED TLD_MOD_DIR copy "$(TargetPath)" %25TLD_MOD_DIR%25</PostBuildEvent>

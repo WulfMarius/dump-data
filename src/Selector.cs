@@ -13,32 +13,29 @@ namespace DumpData
         private static Stack<object> selected = new Stack<object>();
 
         private static float stopwatchStartGameTime;
-
-        private static float stopwatchStartRealTime;
-
         private static float stopwatchStopGameTime;
 
+        private static float stopwatchStartRealTime;
         private static float stopwatchStopRealTime;
 
         public static void OnLoad()
         {
             uConsole.RegisterCommand("cd", new uConsole.DebugCommand(Select));
-            uConsole.RegisterCommand("Select", new uConsole.DebugCommand(Select));
-            uConsole.RegisterCommand("Back", new uConsole.DebugCommand(Back));
-            uConsole.RegisterCommand("Get", new uConsole.DebugCommand(Get));
-            uConsole.RegisterCommand("Set", new uConsole.DebugCommand(Set));
-            uConsole.RegisterCommand("Show", new uConsole.DebugCommand(Show));
+            uConsole.RegisterCommand("select", new uConsole.DebugCommand(Select));
+            uConsole.RegisterCommand("back", new uConsole.DebugCommand(Back));
+            uConsole.RegisterCommand("get", new uConsole.DebugCommand(Get));
+            uConsole.RegisterCommand("set", new uConsole.DebugCommand(Set));
+            uConsole.RegisterCommand("show", new uConsole.DebugCommand(Show));
 
-            uConsole.RegisterCommand("Culling-Mask", new uConsole.DebugCommand(CullingMask));
-
-            uConsole.RegisterCommand("Type", new uConsole.DebugCommand(PrintType));
-            uConsole.RegisterCommand("Hierarchy", new uConsole.DebugCommand(PrintHierarchy));
-            uConsole.RegisterCommand("Path", new uConsole.DebugCommand(PrintPath));
-            uConsole.RegisterCommand("Transform", new uConsole.DebugCommand(PrintTransform));
-            uConsole.RegisterCommand("Children", new uConsole.DebugCommand(PrintChildren));
+            uConsole.RegisterCommand("culling-mask", new uConsole.DebugCommand(CullingMask));
+            uConsole.RegisterCommand("type", new uConsole.DebugCommand(PrintType));
+            uConsole.RegisterCommand("hierarchy", new uConsole.DebugCommand(PrintHierarchy));
+            uConsole.RegisterCommand("path", new uConsole.DebugCommand(PrintPath));
+            uConsole.RegisterCommand("transform", new uConsole.DebugCommand(PrintTransform));
+            uConsole.RegisterCommand("children", new uConsole.DebugCommand(PrintChildren));
             uConsole.RegisterCommand("components", new uConsole.DebugCommand(PrintComponents));
-            uConsole.RegisterCommand("Details", new uConsole.DebugCommand(PrintDetails));
-            uConsole.RegisterCommand("Invoke", new uConsole.DebugCommand(Invoke));
+            uConsole.RegisterCommand("details", new uConsole.DebugCommand(PrintDetails));
+            uConsole.RegisterCommand("invoke", new uConsole.DebugCommand(Invoke));
             uConsole.RegisterCommand("toggle-active", new uConsole.DebugCommand(ToggleActive));
             uConsole.RegisterCommand("toggle-active-children", new uConsole.DebugCommand(ToggleActiveChildren));
             uConsole.RegisterCommand("set-position", new uConsole.DebugCommand(SetPosition));
@@ -48,259 +45,6 @@ namespace DumpData
             uConsole.RegisterCommand("begin-stopwatch", new uConsole.DebugCommand(StartStopwatch));
             uConsole.RegisterCommand("end-stopwatch", new uConsole.DebugCommand(StopStopwatch));
             uConsole.RegisterCommand("stopwatch", new uConsole.DebugCommand(ShowStopwatch));
-
-            uConsole.RegisterCommand("fix-container", new uConsole.DebugCommand(FixContainer));
-
-            uConsole.RegisterCommand("find-interactive-object", new uConsole.DebugCommand(FindInteractiveObject));
-        }
-
-        private static void FindInteractiveObject()
-        {
-            Debug.Log("FindInteractiveObject");
-            float maxRange = 2;
-
-            int layerMask1 = 138383360;
-            RaycastHit hitInfo;
-            bool flag1 = Physics.Raycast(GameManager.GetMainCamera().transform.position, GameManager.GetMainCamera().transform.forward, out hitInfo, maxRange, layerMask1);
-            Debug.Log("flag1 = " + flag1 + ", collision = " + (hitInfo.collider == null ? "null" : hitInfo.collider.name + ", " + hitInfo.collider.GetInstanceID()));
-
-            if (!flag1)
-            {
-                flag1 = Physics.Raycast(GameManager.GetWeaponCamera().transform.position, GameManager.GetWeaponCamera().transform.forward, out hitInfo, maxRange, layerMask1);
-                Debug.Log("flag1 = " + flag1 + ", collision = " + (hitInfo.collider == null ? "null" : hitInfo.collider.name));
-
-                if (flag1 && (UnityEngine.Object)Utils.GetTopParentWithLayer(hitInfo.collider.gameObject, 23) == (UnityEngine.Object)hitInfo.collider.gameObject)
-                    flag1 = false;
-            }
-
-            if (!flag1)
-            {
-                layerMask1 |= 16777216;
-                flag1 = Physics.Raycast(GameManager.GetMainCamera().transform.position, GameManager.GetMainCamera().transform.forward, out hitInfo, maxRange, layerMask1);
-                Debug.Log("flag1 = " + flag1 + ", collision = " + (hitInfo.collider == null ? "null" : hitInfo.collider.name));
-            }
-
-            if (!flag1)
-            {
-                flag1 = Physics.Raycast(GameManager.GetWeaponCamera().transform.position, GameManager.GetWeaponCamera().transform.forward, out hitInfo, maxRange, layerMask1);
-                Debug.Log("flag1 = " + flag1 + ", collision = " + (hitInfo.collider == null ? "null" : hitInfo.collider.name));
-
-                if (flag1 && (UnityEngine.Object)Utils.GetTopParentWithLayer(hitInfo.collider.gameObject, 23) == (UnityEngine.Object)hitInfo.collider.gameObject)
-                    flag1 = false;
-            }
-
-            if (!flag1)
-            {
-                Debug.Log("Exit 1: null");
-                return;
-            }
-
-            GameObject child1 = (GameObject)null;
-            float distance = hitInfo.distance;
-            GearItem gearItem = (GearItem)null;
-            if (hitInfo.collider.gameObject.layer == 15)
-            {
-                if ((bool)((UnityEngine.Object)hitInfo.collider.transform.gameObject.GetComponent<Container>()))
-                {
-                    child1 = hitInfo.collider.transform.gameObject.GetComponent<Container>().gameObject;
-                }
-                else
-                {
-                    for (Transform parent = hitInfo.collider.transform.parent; (UnityEngine.Object)parent != (UnityEngine.Object)null; parent = parent.parent)
-                    {
-                        gearItem = parent.gameObject.GetComponent<GearItem>();
-                        if ((UnityEngine.Object)gearItem != (UnityEngine.Object)null)
-                        {
-                            child1 = gearItem.gameObject;
-                            break;
-                        }
-                    }
-                    if ((UnityEngine.Object)child1 == (UnityEngine.Object)null)
-                    {
-                        Debug.Log("Exit2: null");
-                        return;
-                    }
-                }
-            }
-            else
-            {
-                child1 = hitInfo.transform.gameObject;
-                gearItem = child1.GetComponent<GearItem>();
-            }
-
-            //this.m_LocationOfLastInteractHit = hitInfo.point;
-
-            if ((bool)((UnityEngine.Object)gearItem))
-            {
-                if (gearItem.m_InPlayerInventory)
-                {
-                    Debug.Log("Exit3: null");
-                    return;
-                }
-
-                if (gearItem.m_NonInteractive)
-                {
-                    Debug.Log("Exit4: null");
-                    return;
-                }
-            }
-
-            Rigidbody component1 = child1.GetComponent<Rigidbody>();
-            if ((UnityEngine.Object)component1 != (UnityEngine.Object)null)
-            {
-                if ((double)component1.velocity.sqrMagnitude > 25.0)
-                {
-                    Debug.Log("Exit5: null");
-                    return;
-                }
-
-                ArrowItem component2 = child1.GetComponent<ArrowItem>();
-                if ((UnityEngine.Object)component2 != (UnityEngine.Object)null && component2.InFlight(true))
-                {
-                    Debug.Log("Exit6: null");
-                    return;
-                }
-            }
-
-            int layerMask2 = (Utils.m_PhysicalCollisionLayerMask | 131072 | 1048576 | 134217728 | 16777216 | 32768) & -67108865;
-            bool flag2 = Physics.Raycast(GameManager.GetMainCamera().transform.position, GameManager.GetMainCamera().transform.forward, out hitInfo, maxRange, layerMask2);
-            if (!flag2)
-            {
-                flag2 = Physics.Raycast(GameManager.GetWeaponCamera().transform.position, GameManager.GetWeaponCamera().transform.forward, out hitInfo, maxRange, layerMask2);
-                if (flag2 && (UnityEngine.Object)Utils.GetTopParentWithLayer(hitInfo.collider.gameObject, 23) == (UnityEngine.Object)hitInfo.collider.gameObject)
-                    flag2 = false;
-            }
-            if (!flag2)
-            {
-                Debug.Log("Exit7: null");
-                return;
-            }
-
-            if ((bool)((UnityEngine.Object)hitInfo.collider) && (bool)((UnityEngine.Object)hitInfo.transform.gameObject) && ((bool)((UnityEngine.Object)hitInfo.transform.gameObject.GetComponent<GearItem>()) && !hitInfo.transform.gameObject.GetComponent<GearItem>().m_InPlayerInventory) && child1.layer == 21)
-                child1 = hitInfo.transform.gameObject;
-            if ((double)hitInfo.distance > (double)distance)
-            {
-                Debug.Log("Exit8: " + Utils.GetTopParentWithLayer(child1, child1.layer));
-                return;
-            }
-
-            GameObject gameObject = hitInfo.transform.gameObject;
-            if ((UnityEngine.Object)gameObject == (UnityEngine.Object)child1)
-            {
-                if (child1.layer == 27)
-                {
-                    BaseAi componentInParent = child1.GetComponentInParent<BaseAi>();
-                    if ((bool)((UnityEngine.Object)componentInParent))
-                    {
-                        Debug.Log("Exit9: " + componentInParent.gameObject);
-                        return;
-                    }
-
-                    Debug.Log("Exit10: " + Utils.GetTopParentWithLayer(child1, child1.transform.parent.gameObject.layer));
-                    return;
-                }
-
-                if (child1.layer != 18)
-                {
-                    Debug.Log("Exit11: " + Utils.GetTopParentWithLayer(child1, child1.layer));
-                    return;
-                }
-
-                for (int index = 0; index < child1.transform.childCount; ++index)
-                {
-                    Transform child2 = child1.transform.GetChild(index);
-                    if ((UnityEngine.Object)child2 != (UnityEngine.Object)null && child2.gameObject.activeInHierarchy)
-                    {
-                        MeshCollider[] componentsInChildren = child2.GetComponentsInChildren<MeshCollider>(false);
-                        if (componentsInChildren != null && componentsInChildren.Length > 0)
-                        {
-                            Debug.Log("Exit12: null");
-                            return;
-                        }
-                    }
-                }
-
-                Debug.Log("Exit13: " + Utils.GetTopParentWithLayer(child1, child1.layer));
-                return;
-            }
-
-            foreach (UnityEngine.Object componentsInChild in child1.GetComponentsInChildren<Transform>())
-            {
-                if (componentsInChild == (UnityEngine.Object)gameObject.transform)
-                {
-                    Debug.Log("Exit14: " + Utils.GetTopParentWithLayer(child1, child1.layer));
-                    return;
-                }
-            }
-
-            if (gameObject.gameObject.layer == 24)
-            {
-                Debug.Log("Exit15: " + Utils.GetTopParentWithLayer(child1, child1.layer));
-                return;
-            }
-
-            Debug.Log("Exit16: null");
-            return;
-        }
-
-        private static void FixContainer()
-        {
-            if (!HasSelection())
-            {
-                Debug.Log("  Current selection is empty.");
-                return;
-            }
-
-            GameObject gameObject = CurrentGameObject();
-            if (gameObject == null)
-            {
-                Debug.Log("   Cannot set position if the current selection is not a GameObject.");
-                return;
-            }
-
-            Container sibling = gameObject.transform.parent.GetComponentInChildren<Container>();
-            if (sibling == null)
-            {
-                Debug.Log("  No sibling template found.");
-                return;
-            }
-
-            foreach (iTweenEvent eachTemplate in sibling.GetComponentsInChildren<iTweenEvent>())
-            {
-                iTweenEvent iTweenEvent = gameObject.AddComponent<iTweenEvent>();
-                iTweenEvent.tweenName = eachTemplate.tweenName;
-                iTweenEvent.type = eachTemplate.type;
-                iTweenEvent.Values = eachTemplate.Values;
-                iTweenEvent.playAutomatically = eachTemplate.playAutomatically;
-            }
-
-            ObjectAnim objectAnim = gameObject.AddComponent<ObjectAnim>();
-            objectAnim.m_Target = gameObject;
-
-            Vector3 location = gameObject.transform.localPosition;
-            location.x = 0.107f;
-            gameObject.transform.localPosition = location;
-            gameObject.transform.localRotation = Quaternion.identity;
-
-            ObjectGuid objectGuid = gameObject.AddComponent<ObjectGuid>();
-            objectGuid.m_Guid = Guid.NewGuid().ToString();
-
-            Container container = gameObject.AddComponent<Container>();
-            container.m_LocalizedDisplayName = new LocalizedString()
-            {
-                m_LocalizationID = sibling.m_LocalizedDisplayName.m_LocalizationID
-            };
-            container.m_CloseAudio = sibling.m_CloseAudio;
-            container.m_CapacityKG = sibling.m_CapacityKG;
-            container.m_DecayScalar = sibling.m_DecayScalar;
-            container.m_DefaultFilter = sibling.m_DefaultFilter;
-            container.m_OpenAudio = sibling.m_OpenAudio;
-            container.m_OpenDelaySeconds = sibling.m_OpenDelaySeconds;
-
-            gameObject.AddComponent<BoxCollider>();
-
-            gameObject.layer = vp_Layer.Container;
-
         }
 
         private static void Back()
@@ -321,6 +65,31 @@ namespace DumpData
             }
 
             PrintSelected();
+        }
+
+        private static void CullingMask()
+        {
+            if (!HasSelection())
+            {
+                Debug.Log("  Current selection is empty.");
+                return;
+            }
+
+            bool setValue = uConsole.GetNumParameters() == 1;
+
+            Light light = CurrentSelection() as Light;
+            if (light != null)
+            {
+                if (setValue)
+                {
+                    light.cullingMask = uConsole.GetInt();
+                }
+
+                Debug.Log("  " + light + ".cullingMask is " + light.cullingMask);
+                return;
+            }
+
+            Debug.Log("Culling mask is not support for " + CurrentSelection().GetType());
         }
 
         private static GameObject CurrentGameObject()
@@ -389,6 +158,43 @@ namespace DumpData
             }
 
             return result;
+        }
+
+        private static void Get()
+        {
+            if (!HasSelection())
+            {
+                Debug.Log("  Current selection is empty.");
+                return;
+            }
+
+            int numParameters = uConsole.GetNumParameters();
+            if (numParameters != 1)
+            {
+                Debug.Log("  Field required.");
+                return;
+            }
+
+            object currentSelection = CurrentSelection();
+            var name = uConsole.GetString();
+
+            FieldInfo fieldInfo = AccessTools.Field(currentSelection.GetType(), name);
+            Debug.Log("fieldInfo = " + fieldInfo);
+            if (fieldInfo != null)
+            {
+                Debug.Log("  " + fieldInfo.GetValue(currentSelection));
+                return;
+            }
+
+            PropertyInfo propertyInfo = AccessTools.Property(currentSelection.GetType(), name);
+            Debug.Log("propertyInfo = " + propertyInfo);
+            if (propertyInfo != null)
+            {
+                Debug.Log("  " + propertyInfo.GetValue(currentSelection, null));
+                return;
+            }
+
+            Debug.Log("  Unknown field/property '" + name + "'.");
         }
 
         private static bool HasSelection()
@@ -469,31 +275,6 @@ namespace DumpData
             Debug.Log("Cannot print children of " + CurrentSelection() + ".");
         }
 
-        private static void CullingMask()
-        {
-            if (!HasSelection())
-            {
-                Debug.Log("  Current selection is empty.");
-                return;
-            }
-
-            bool setValue = uConsole.GetNumParameters() == 1;
-
-            Light light = CurrentSelection() as Light;
-            if (light != null)
-            {
-                if (setValue)
-                {
-                    light.cullingMask = uConsole.GetInt();
-                }
-
-                Debug.Log("  " + light + ".cullingMask is " + light.cullingMask);
-                return;
-            }
-
-            Debug.Log("Culling mask is not support for " + CurrentSelection().GetType());
-        }
-
         private static void PrintComponents()
         {
             if (!HasSelection())
@@ -544,24 +325,6 @@ namespace DumpData
             Debug.Log("Cannot print details of " + CurrentSelection());
         }
 
-        private static void PrintPath()
-        {
-            if (!HasSelection())
-            {
-                Debug.Log("Current selection is empty.");
-                return;
-            }
-
-            GameObject gameObject = CurrentGameObject();
-            if (gameObject == null)
-            {
-                Debug.Log("Cannot print hierarchy if the turrent selection is not a GameObject.");
-                return;
-            }
-
-            Debug.Log(DumpUtils.FormatPath(gameObject));
-        }
-
         private static void PrintHierarchy()
         {
             if (!HasSelection())
@@ -578,6 +341,24 @@ namespace DumpData
             }
 
             Debug.Log(DumpUtils.FormatHierarchy(gameObject));
+        }
+
+        private static void PrintPath()
+        {
+            if (!HasSelection())
+            {
+                Debug.Log("Current selection is empty.");
+                return;
+            }
+
+            GameObject gameObject = CurrentGameObject();
+            if (gameObject == null)
+            {
+                Debug.Log("Cannot print hierarchy if the turrent selection is not a GameObject.");
+                return;
+            }
+
+            Debug.Log(DumpUtils.FormatPath(gameObject));
         }
 
         private static void PrintSelected()
@@ -858,43 +639,6 @@ namespace DumpData
             }
 
             return SelectIndex(name);
-        }
-
-        private static void Get()
-        {
-            if (!HasSelection())
-            {
-                Debug.Log("  Current selection is empty.");
-                return;
-            }
-
-            int numParameters = uConsole.GetNumParameters();
-            if (numParameters != 1)
-            {
-                Debug.Log("  Field required.");
-                return;
-            }
-
-            object currentSelection = CurrentSelection();
-            var name = uConsole.GetString();
-
-            FieldInfo fieldInfo = AccessTools.Field(currentSelection.GetType(), name);
-            Debug.Log("fieldInfo = " + fieldInfo);
-            if (fieldInfo != null)
-            {
-                Debug.Log("  " + fieldInfo.GetValue(currentSelection));
-                return;
-            }
-
-            PropertyInfo propertyInfo = AccessTools.Property(currentSelection.GetType(), name);
-            Debug.Log("propertyInfo = " + propertyInfo);
-            if (propertyInfo != null)
-            {
-                Debug.Log("  " + propertyInfo.GetValue(currentSelection, null));
-                return;
-            }
-
-            Debug.Log("  Unknown field/property '" + name + "'.");
         }
 
         private static void Set()

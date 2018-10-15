@@ -77,7 +77,7 @@ public class ObjExporter
     public static void DoExport(GameObject gameObject, bool makeSubmeshes)
     {
         string meshName = gameObject.name.Replace(':', '_');
-        string fileName = "C:\\Users\\st_dg\\OneDrive\\TLD\\exported-meshes\\" + meshName + ".obj";
+        string fileName = ".\\exported-meshes\\" + meshName + ".obj";
         Debug.Log("Exporting " + fileName);
 
         ObjExporterScript.Start();
